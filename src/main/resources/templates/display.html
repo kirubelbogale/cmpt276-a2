@@ -4,15 +4,21 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Database Viewer</title>
 </head>
 <body>
-  Rectangle Updated Successfully!
   <div class="container">
       <h1>Database Output</h1>
-      <ul th:each="record : ${records}">
-          <li th:text="${record}"/>
-      </ul>
+      <table>
+          <tr>
+              <th>Name</th>
+              <th>Colour</th>
+          </tr>
+          <tr th:each = "record : ${records}">
+              <td th:text="${record}"></td>
+              <td th:text="${record}"></td>
+          </tr>
+      </table>
   </div>
   <a th:href="@{/rectangle}">Entry Page</a>
 </body>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New rectangle Form</title>
+  <title>New Rectangle Form</title>
 </head>
 <body>
   <form action="#" method="post" th:action="@{/rectangle}" th:object="${rectangle}">
@@ -14,5 +14,6 @@
     <input type="text" th:field=*{colour} placeholder="colour"> <br>
     <input type="submit" value="Submit Rectangle"> 
   </form>
+  <a th:href="@{/rectangle/display}">Display Rectangle Database</a>
 </body>
 </html>

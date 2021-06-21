@@ -2,9 +2,10 @@ package com.example;
 
 public class Rectangle {
     private String name;
-    private Integer width;
-    private Integer height;
+    private String width;
+    private String height;
     private String colour;
+    private String id;
 
     public String getName() {
         return this.name;
@@ -14,27 +15,35 @@ public class Rectangle {
         return this.colour;
     }
 
-    public Integer getWidth() {
+    public String getWidth() {
         return this.width;
     }
 
-    public Integer getHeight() {
+    public String getHeight() {
         return this.height;
+    }
+
+    public String getID() {
+        return this.id;
     }
 
     public void setName(String n) {
         this.name = n;
     }
 
-    public void setWidth(Integer w) {
+    public void setWidth(String w) {
         this.width = w;
     }
 
-    public void setHeight(Integer h) {
+    public void setHeight(String h) {
         this.height = h;
     }
 
     public void setColour(String c) {
         this.colour = c;
+    }
+
+    public void setID(String id) {
+        this.id = id;
     }
 }

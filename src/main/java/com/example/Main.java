@@ -55,7 +55,7 @@ public class Main {
   String index(Map<String, Object> model) {
     String name = "Bobby";
     model.put("name", name);
-    return "index"; // rename this to whatever main .html file is
+    return "index";
   }
 
   @GetMapping(
@@ -92,12 +92,13 @@ public class Main {
      Statement stmt = connection.createStatement();
      ResultSet rs = stmt.executeQuery("SELECT * FROM Rectangle");
 
-     ArrayList<String> output = new ArrayList<String>();    // this part needs to change (see discord)
+     ArrayList<String> output = new ArrayList<String>();
      while (rs.next()) {
        String name = rs.getString("name");
        String id = rs.getString("id");
+       String colour = rs.getString("colour");
 
-       output.add(id + "," + name);
+       output.add(id + ": " + name + ", " + colour);
      }
 
      model.put("records", output);
@@ -108,13 +109,51 @@ public class Main {
    }
   }
 
+  @GetMapping("/rectangle/display")
+  public String displayDB(Map<String, Object> model) {
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT * FROM Rectangle");
+ 
+      ArrayList<String> output = new ArrayList<String>();
+      while (rs.next()) {
+        String name = rs.getString("name");
+        String id = rs.getString("id");
+        String colour = rs.getString("colour");
+ 
+        output.add(id + ": " + name + ", " + colour);
+      }
+ 
+      model.put("records", output);
+      return "display";
+    } catch (Exception e) {
+      model.put("message", e.getMessage());
+      return "error";
+    }    
+  }
+
   @GetMapping("/rectangle/read/{pid}")
   public String getSpecificRectangle(Map<String, Object> model, @PathVariable String pid) {
     System.out.println(pid);
     //
     //query DB : SELECT * FROM Rectangle WHERE id={pid}
-    model.put("id", pid);
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT * FROM Rectangle WHERE id={pid}");
+
+      String name = rs.getString("name");
+      String width = rs.getString("width");
+      String height = rs.getString("height");
+      String colour = rs.getString("colour");
+
+      String output = pid + ": " + "Name: " + name + " Width: " + width + " Height: " + height + " Colour: " + colour;
+
+    model.put("id", output);
     return "readrectangle";
+    } catch (Exception e) {
+      model.put("message", e.getMessage());
+      return "error";
+    }
   }
 
   @GetMapping("/rectangle/read")
@@ -130,8 +169,16 @@ public class Main {
   @DeleteMapping("/rectangle/{pid}")
   public String DeleteRectangle(@PathVariable String pid) {
     // delete rectangle with pid
-    System.out.println(pid);
-    return "deletesuccess";
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+      String del = "DELETE FROM Rectangle WHERE id={pid}";
+      stmt.executeUpdate(del);
+      System.out.println(pid);
+      return "success";
+    } catch (Exception e) {
+     return "error";
+    }
+
   }
 
   @RequestMapping("/db")
